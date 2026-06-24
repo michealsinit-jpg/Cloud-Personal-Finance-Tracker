@@ -1,0 +1,40 @@
+{
+    "transactions": [
+        {
+            "type": "income",
+            "amount": 1500.0
+        },
+        {
+            "type": "expense",
+            "amount": 200.0
+        },
+        {
+            "type": "income",
+            "amount": 1500.0,
+            "description": "Salary",
+            "category": "Work",
+            "Date": "2026-06-22"
+        },
+        {
+            "type": "expense",
+            "amount": 50.0,
+            "description": "Bus Pass",
+            "category": "tansport",
+            "Date": "2026-06-22"
+        },
+        {
+            "type": "income",
+            "amount": 2000.0,
+            "description": "Salary",
+            "category": "Work",
+            "Date": "2026-06-22"
+        },
+        {
+            "type": "expense",
+            "amount": 300.0,
+            "description": "Groceries",
+            "category": "Food",
+            "Date": "2026-06-25"
+        }
+    ]
+}
