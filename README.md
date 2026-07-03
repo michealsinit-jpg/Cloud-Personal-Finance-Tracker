@@ -38,19 +38,19 @@ Future Improvements
 
 ### Dashboard
 
-![Dashboard](static/screenshots/dashboard.png)
+![Dashboard](screenshots/dashboard.png)
 
 ### Transactions
 
-![Transactions](static/screenshots/transactions.png)
+![Transactions](screenshots/transactions.png)
 
 ### Add Income
 
-![Add Income](static/screenshots/add_income.png)
+![Add Income](screenshots/add_income.png)
 
 ### Add Expense
 
-![Add Expense](static/screenshots/add_expense.png)
+![Add Expense](screenshots/add_expense.png)
 
   
 
