@@ -33,6 +33,25 @@ Future Improvements
 * Data visualization and charts
 * Web and mobile application versions
 
+
+## Screenshots
+
+### Dashboard
+
+![Dashboard](static/screenshots/dashboard.png)
+
+### Transactions
+
+![Transactions](static/screenshots/transactions.png)
+
+### Add Income
+
+![Add Income](static/screenshots/add_income.png)
+
+### Add Expense
+
+![Add Expense](static/screenshots/add_expense.png)
+
   
 
 Author 
