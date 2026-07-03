@@ -1,6 +1,8 @@
-from finance import FinanceTracker
+from finance_sql import FinanceTracker
+
 
 tracker = FinanceTracker()
+
 
 
 while True:
@@ -19,9 +21,9 @@ while True:
 
     print("6. Monthly Spending Report")
 
-    print("7.Delete Transaction")
+    print("7.Delete Transactions")
 
-    print("8.Edit Transaction")
+    print("8.Edit Transactions")
 
     print("9. Search Transactions")
 
@@ -60,11 +62,11 @@ while True:
 
     elif choice == "7":
          
-         tracker.delete_transaction()
+         tracker.delete_transactions()
 
     elif choice == "8":
          
-         tracker.edit_transaction()
+         tracker.edit_transactions()
 
     elif choice == "9":
          
@@ -87,3 +89,4 @@ while True:
         
     else:
      print("Invalid choice. Try again.")
+
