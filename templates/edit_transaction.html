@@ -14,57 +14,133 @@
 
 <body>
 
-<div class="container">
+<div class="form-container">
 
-    <h1>Edit Transaction</h1>
+    <div class="form-card">
 
-<form method="POST">
+        <h1>✏️ Edit Transaction</h1>
 
-    <label>Type</label><br>
+        <p>Update the details of your transaction.</p>
 
-    <input type="text"
+        <form method="POST">
 
-           name="transaction_type"
+            <div class="form-group">
 
-           value="{{ transaction.transaction_type }}"><br><br>
+                <label>Transaction Type</label>
 
-    <label>Category</label><br>
+                <select name="transaction_type">
 
-    <input type="text"
+                    <option value="income"
 
-           name="category"
+                    {% if transaction.transaction_type|lower == "income" %}selected{% endif %}>
 
-           value="{{ transaction.category }}"><br><br>
+                        Income
 
-    <label>Description</label><br>
+                    </option>
 
-    <input type="text"
+                    <option value="expense"
 
-           name="description"
+                    {% if transaction.transaction_type|lower == "expense" %}selected{% endif %}>
 
-           value="{{ transaction.description }}"><br><br>
+                        Expense
 
-    <label>Amount</label><br>
+                    </option>
 
-    <input type="number"
+                </select>
 
-           step="0.01"
+            </div>
 
-           name="amount"
+            <div class="form-group">
 
-           value="{{ transaction.amount }}"><br><br>
+                <label>Category</label>
 
-    <label>Date</label><br>
+                <input
 
-    <input type="date"
+                    type="text"
 
-           name="date"
+                    name="category"
 
-           value="{{ transaction.transaction_date }}"><br><br>
+                    value="{{ transaction.category }}"
 
-    <button type="submit">Save Changes</button>
+                    placeholder="Enter category"
 
-</form>
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Description</label>
+
+                <input
+
+                    type="text"
+
+                    name="description"
+
+                    value="{{ transaction.description }}"
+
+                    placeholder="Enter description"
+
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Amount</label>
+
+                <input
+
+                    type="number"
+
+                    step="0.01"
+
+                    name="amount"
+
+                    value="{{ transaction.amount }}"
+
+                    placeholder="0.00"
+
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Date</label>
+
+                <input
+
+                    type="date"
+
+                    name="date"
+
+                    value="{{ transaction.transaction_date }}"
+
+                    required>
+
+            </div>
+
+            <button type="submit" class="btn">
+
+                💾 Save Changes
+
+            </button>
+
+        </form>
+
+        <p style="text-align:center; margin-top:20px;">
+
+            <a href="{{ url_for('transactions') }}" class="back-btn">
+
+                ← Back to Transactions
+
+            </a>
+
+        </p>
+
+    </div>
 
 </div>
 

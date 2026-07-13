@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Monthly Spending Report</title>
+
+    <link rel="stylesheet"
+
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📅 Monthly Spending Report</h1>
+
+    <p>Track your monthly spending trends over time.</p>
+
+    <div class="actions">
+
+        <a href="{{ url_for('home') }}">
+
+            <button>← Back to Dashboard</button>
+
+        </a>
+
+    </div>
+
+    <div class="chart-container">
+
+        <canvas id="monthlyChart"></canvas>
+
+    </div>
+
+</div>
+
+<script>
+
+const labels = [
+
+{% for item in spending %}
+
+"{{ item.month }}",
+
+{% endfor %}
+
+];
+
+const data = [
+
+{% for item in spending %}
+
+{{ item.total }},
+
+{% endfor %}
+
+];
+
+const ctx = document.getElementById('monthlyChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            label: 'Monthly Spending (£)',
+
+            data: data
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            },
+
+            title: {
+
+                display: true,
+
+                text: 'Monthly Spending Report'
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>

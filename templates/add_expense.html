@@ -16,7 +16,9 @@
 
     <div class="form-card">
 
-        <h1>Add Expense</h1>
+        <h1>💸 Add Expense</h1>
+
+        <p>Record a new expense transaction.</p>
 
         <form method="POST">
 
@@ -24,7 +26,12 @@
 
                 <label>Amount</label>
 
-                <input type="number" name="amount" step="0.01" required>
+                <input 
+                    type="number" 
+                    name="amount" 
+                    step="0.01"
+                    placeholder="0.00"
+                    required>
 
             </div>
 
@@ -32,7 +39,11 @@
 
                 <label>Category</label>
 
-                <input type="text" name="category" required>
+                <input 
+                     type="text"
+                     name="category"
+                     placeholder="e.g. Groceries"
+                     required>
 
             </div>
 
@@ -40,7 +51,11 @@
 
                 <label>Description</label>
 
-                <input type="text" name="description" required>
+                <input 
+                     type="text"
+                     name="description"
+                     placeholder="Brief description"
+                     required>
 
             </div>
 
@@ -52,17 +67,21 @@
 
             </div>
 
-            <button type="submit" class="btn">Add Expense</button>
+            <button type="submit" class="btn">
+                💸Add Expense
+            </button>
 
         </form>
 
-        <br>
+        <p style="text-align:center; margin-top:20px;">
 
-        <a href="{{ url_for('home') }}" class="back-btn">
+             <a href="{{ url_for('home') }}" class="back-btn">
 
-            ← Back to Dashboard
+                 ← Back to Dashboard
 
-        </a>
+            </a>
+
+        </p>
 
     </div>
 

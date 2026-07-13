@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Spending by Category</title>
+
+    <link rel="stylesheet"
+
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📊 Spending by Category</h1>
+
+    <p>View how your expenses are distributed across different categories.</p>
+
+    <div class="actions">
+
+        <a href="{{ url_for('home') }}">
+
+            <button>← Back to Dashboard</button>
+
+        </a>
+
+    </div>
+
+    <div class="chart-container">
+
+        <canvas id="expenseChart"></canvas>
+
+    </div>
+
+</div>
+
+<script>
+
+const labels = [
+
+{% for item in spending %}
+
+"{{ item.category }}",
+
+{% endfor %}
+
+];
+
+const data = [
+
+{% for item in spending %}
+
+{{ item.total }},
+
+{% endfor %}
+
+];
+
+const ctx = document.getElementById('expenseChart');
+
+new Chart(ctx, {
+
+    type: 'pie',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            data: data
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                position: 'bottom'
+
+            },
+
+            title: {
+
+                display: true,
+
+                text: 'Expense Distribution by Category'
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>

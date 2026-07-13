@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Budget</title>
+
+    <link rel="stylesheet"
+
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        💰 Cloud Finance Tracker
+
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('home') }}">🏠 Dashboard</a>
+
+        <a href="{{ url_for('transactions') }}">📋 Transactions</a>
+
+        <a href="{{ url_for('add_income') }}">💰 Income</a>
+
+        <a href="{{ url_for('add_expense') }}">💸 Expense</a>
+
+        <a href="{{ url_for('budget') }}">🎯 Budget</a>
+
+        <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <h1>🎯 Monthly Budget</h1>
+
+    <p>Set or update your monthly spending budget.</p>
+
+    <!-- Summary starts here -->
+
+    <div class="summary">
+
+        <div class="card">
+
+            <h2>🎯 Current Monthly Budget</h2>
+
+            <p class="budget-amount">
+
+                £{{ "%.2f"|format(budget) }}
+
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>💸 Spent This Month</h2>
+
+            <p class="expense-amount">
+
+                £{{ "%.2f"|format(spent) }}
+
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>💰 Remaining Budget</h2>
+
+            <p class="balance-amount">
+
+                £{{ "%.2f"|format(remaining) }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Summary ends here -->
+
+    <h2>📊 Budget Usage</h2>
+
+    <div class="progress-bar">
+
+        <div class="progress-fill"
+
+             style="width: {{ percentage }}%;
+
+                    background-color: {{ progress_color }};">
+
+        </div>
+
+    </div>
+
+    <p>{{ "%.1f"|format(percentage) }}% of your monthly budget has been used.</p>
+
+    <p class="budget-status">
+
+        {{ status_message }}
+
+    </p>
+
+    <form method="POST" class="budget-form">
+
+        <label for="amount"><strong>Monthly Budget (£)</strong></label>
+
+        <input
+
+            type="number"
+
+            id="amount"
+
+            name="amount"
+
+            step="0.01"
+
+            min="0"
+
+            placeholder="Enter your monthly budget"
+
+            required>
+
+        <button type="submit">💾 Save Budget</button>
+
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('home') }}">
+
+        <button type="button">← Back to Dashboard</button>
+
+    </a>
+
+</div>
+
+
+</body>
+
+</html>

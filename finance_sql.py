@@ -1,3 +1,5 @@
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from database import get_connection
 
 from transaction import Transaction
@@ -96,7 +98,7 @@ class FinanceTracker:
        connection.close()
 
    def add_income(self):
-
+       
        amount = get_valid_amount()
 
        description = get_valid_description()
@@ -122,7 +124,7 @@ class FinanceTracker:
        """
 
        values = (
-
+           
            "income",
 
            category,
@@ -172,7 +174,7 @@ class FinanceTracker:
 
       (transaction_type, category, amount, transaction_date, description)
 
-      VALUES (%s, %s, %s, %s, %s)
+      VALUES (%s, %s, %s, %s, %s,)
 
       """
 
@@ -519,7 +521,7 @@ class FinanceTracker:
 
     self.close_connection(connection, cursor)
    
-   def get_total_income(self):
+   def get_total_income(self, user_id):
 
        connection, cursor = self.get_cursor()
 
@@ -529,11 +531,12 @@ class FinanceTracker:
 
        FROM transactions
 
-       WHERE transaction_type = 'income';
+       WHERE user_id = %s
+       AND   transaction_type = 'income';
 
        """
 
-       cursor.execute(sql)
+       cursor.execute(sql,(user_id,))
 
        total = cursor.fetchone()[0] or 0
 
@@ -541,7 +544,7 @@ class FinanceTracker:
 
        return total
 
-   def get_total_expense(self):
+   def get_total_expense(self, user_id):
 
        connection, cursor = self.get_cursor()
 
@@ -551,11 +554,12 @@ class FinanceTracker:
 
        FROM transactions
 
-       WHERE transaction_type = 'expense';
+       WHERE user_id = %s
+       AND   transaction_type = 'expense';
 
        """
 
-       cursor.execute(sql)
+       cursor.execute(sql, (user_id,))
 
        total = cursor.fetchone()[0] or 0
 
@@ -563,15 +567,15 @@ class FinanceTracker:
 
        return total
 
-   def get_balance(self):
+   def get_balance(self, user_id):
 
-       income = self.get_total_income()
+       income = self.get_total_income(user_id)
 
-       expense = self.get_total_expense()
+       expense = self.get_total_expense(user_id)
 
        return income - expense
 
-   def get_recent_transactions(self):
+   def get_recent_transactions(self, user_id):
 
        connection, cursor = self.get_cursor()
 
@@ -593,13 +597,15 @@ class FinanceTracker:
 
        FROM transactions
 
+       WHERE user_id = %s
+
        ORDER BY transaction_date DESC
 
        LIMIT 5;
 
        """
 
-       cursor.execute(sql)
+       cursor.execute(sql, (user_id,))
 
        rows = cursor.fetchall()
 
@@ -614,7 +620,7 @@ class FinanceTracker:
        return transactions
    
 
-   def add_income_web(self, amount, category, description, date):
+   def add_income_web(self, user_id, amount, category, description, date):
 
     connection, cursor = self.get_cursor()
 
@@ -622,13 +628,14 @@ class FinanceTracker:
 
     INSERT INTO transactions
 
-    (transaction_type, category, amount, transaction_date, description)
+    (user_id, transaction_type, category, amount, transaction_date, description)
 
-    VALUES (%s, %s, %s, %s, %s)
+    VALUES (%s, %s, %s, %s, %s, %s)
 
     """
 
     values = (
+        user_id,
 
         "income",
 
@@ -652,7 +659,7 @@ class FinanceTracker:
 
 
      
-   def add_expense_web(self, amount, category, description, date):
+   def add_expense_web(self, user_id, amount, category, description, date):
 
     connection, cursor = self.get_cursor()
 
@@ -660,13 +667,14 @@ class FinanceTracker:
 
     INSERT INTO transactions
 
-    (transaction_type, category, amount, transaction_date, description)
+    (user_id, transaction_type, category, amount, transaction_date, description)
 
-    VALUES (%s, %s, %s, %s, %s)
+    VALUES (%s, %s, %s, %s, %s, %s)
 
     """
 
     values = (
+        user_id,
 
         "expense",
 
@@ -687,7 +695,7 @@ class FinanceTracker:
     self.close_connection(connection, cursor)
 
 
-   def get_all_transactions(self):
+   def get_all_transactions(self, user_id):
 
        connection, cursor = self.get_cursor()
 
@@ -707,13 +715,16 @@ class FinanceTracker:
 
           transaction_date
 
+       
        FROM transactions
-
+       
+       WHERE user_id = %s
+       
        ORDER BY transaction_date DESC
 
        """
 
-       cursor.execute(sql)
+       cursor.execute(sql, (user_id,))
 
        rows = cursor.fetchall()
 
@@ -730,7 +741,7 @@ class FinanceTracker:
 
 
 
-   def delete_transaction(self, transaction_id):
+   def delete_transaction(self, user_id, transaction_id):
 
        connection = get_connection()
 
@@ -740,11 +751,12 @@ class FinanceTracker:
 
        DELETE FROM transactions
 
-       WHERE transaction_id = %s
+       WHERE user_id = %s
+       AND   id = %s
 
        """
 
-       cursor.execute(query, (transaction_id,))
+       cursor.execute(query, (user_id, transaction_id,))
 
 
 
@@ -755,7 +767,7 @@ class FinanceTracker:
        connection.close() 
 
 
-   def get_transaction_by_id(self, transaction_id):
+   def get_transaction_by_id(self, user_id, transaction_id):
 
       connection, cursor = self.get_cursor()
 
@@ -777,11 +789,12 @@ class FinanceTracker:
 
       FROM transactions
 
-      WHERE id = %s
+      WHERE user_id = %s
+      AND id = %s
 
       """
 
-      cursor.execute(sql, (transaction_id,))
+      cursor.execute(sql, (user_id, transaction_id))
 
       row = cursor.fetchone()
 
@@ -802,7 +815,6 @@ class FinanceTracker:
 
     self,
 
-    transaction_id,
 
     transaction_type,
 
@@ -812,9 +824,11 @@ class FinanceTracker:
 
     amount,
 
-    transaction_date
+    transaction_date,
 
-):
+    user_id,
+
+    transaction_id):
 
     connection, cursor = self.get_cursor()
 
@@ -834,11 +848,13 @@ class FinanceTracker:
 
         transaction_date = %s
 
-    WHERE id = %s
+    WHERE user_id = %s
+    AND   id = %s
 
     """
 
-    cursor.execute(sql, (
+    try:
+        cursor.execute(sql, (
 
         transaction_type,
 
@@ -850,10 +866,327 @@ class FinanceTracker:
 
         transaction_date,
 
+        user_id,
+
         transaction_id
+
+    
 
     ))
 
-    connection.commit()
+        if cursor.rowcount == 0:
 
-    self.close_connection(connection, cursor)
+           print("No transaction was updated.")
+
+        else:
+
+            connection.commit()
+
+    except Exception as e:
+        connection.rollback()
+        print(f"Database error: {e}")
+
+    finally: 
+  
+       self.close_connection(connection, cursor)
+
+
+   def register_user(self, username, email, password):
+
+    connection, cursor = self.get_cursor()
+
+    try:
+
+        hashed_password = generate_password_hash(password)
+
+        sql = """
+
+        INSERT INTO users (username, email, password)
+
+        VALUES (%s, %s, %s)
+
+        """
+
+        cursor.execute(sql, (username, email, hashed_password))
+
+        connection.commit()
+
+        return True
+
+    except Exception as e:
+
+        print("Registration Error:", e)
+
+        return False
+
+    finally:
+
+        cursor.close()
+
+        connection.close()
+
+
+
+   def get_user_by_email(self, email):
+
+       connection, cursor = self.get_cursor()
+
+       sql = """
+
+       SELECT * FROM users
+
+       WHERE email = %s
+
+       """
+
+       cursor.execute(sql, (email,))
+
+       user = cursor.fetchone()
+
+       cursor.close()
+
+       connection.close()
+
+       return user
+   
+   def get_spending_by_category(self, user_id):
+
+       connection = get_connection()
+
+       cursor = connection.cursor(dictionary=True)
+
+       query = """
+
+         SELECT category, SUM(amount) AS total
+
+         FROM transactions
+
+         WHERE transaction_type = 'Expense'
+
+         AND user_id = %s
+
+         GROUP BY category
+
+         ORDER BY total DESC
+
+        """
+
+       cursor.execute(query, (user_id,))
+
+       results = cursor.fetchall()
+
+       cursor.close()
+
+       connection.close()
+
+       return results
+   
+
+   def get_monthly_spending(self, user_id):
+
+       connection = get_connection()
+
+       cursor = connection.cursor(dictionary=True)
+
+       query = """
+
+         SELECT
+
+         DATE_FORMAT(transaction_date, '%M %Y') AS month,
+
+         SUM(amount) AS total
+
+         FROM transactions
+
+         WHERE transaction_type = 'Expense'
+
+         AND user_id = %s
+
+         GROUP BY
+
+         YEAR(transaction_date),
+
+         MONTH(transaction_date),
+
+         DATE_FORMAT(transaction_date, '%M %Y')
+
+         ORDER BY
+
+         YEAR(transaction_date),
+
+         MONTH(transaction_date)
+
+         """
+
+       cursor.execute(query, (user_id,))
+
+       results = cursor.fetchall()
+
+       cursor.close()
+
+       connection.close()
+
+       return results
+   
+
+   def search_transactions(self, user_id, search_term):
+
+       connection, cursor = self.get_cursor()
+
+       sql = """
+
+        SELECT
+
+          id,
+
+          transaction_type,
+
+          amount,
+
+          description,
+
+          category,
+
+          transaction_date
+
+         FROM transactions
+
+         WHERE user_id = %s
+
+         AND (
+
+         description LIKE %s
+
+         OR category LIKE %s
+
+         OR transaction_type LIKE %s
+
+         )
+
+       ORDER BY transaction_date DESC
+
+       """
+
+       value = "%" + search_term + "%"
+
+       cursor.execute(sql, (user_id, value, value, value))
+
+       results = cursor.fetchall()
+
+       transactions = []
+
+       for row in results:
+
+         transactions.append(Transaction(*row))
+
+       connection.close()
+
+       return transactions
+   
+
+   def set_budget(self, user_id, amount):
+
+      connection, cursor = self.get_cursor()
+
+     # Check if the user already has a budget
+
+      sql = "SELECT * FROM budgets WHERE user_id = %s"
+
+      cursor.execute(sql, (user_id,))
+
+      budget = cursor.fetchone()
+
+      if budget:
+
+        sql = """
+
+        UPDATE budgets
+
+        SET monthly_budget = %s
+
+        WHERE user_id = %s
+
+        """
+
+        cursor.execute(sql, (amount, user_id))
+
+      else:
+
+          sql = """
+
+          INSERT INTO budgets (user_id, monthly_budget)
+
+          VALUES (%s, %s)
+
+          """
+
+          cursor.execute(sql, (user_id, amount))
+
+      connection.commit()
+
+      self.close_connection(connection, cursor)
+
+
+   def get_budget(self, user_id):
+
+       connection, cursor = self.get_cursor()
+
+       sql = """
+
+       SELECT monthly_budget
+
+       FROM budgets
+
+       WHERE user_id = %s
+
+       """
+
+       cursor.execute(sql, (user_id,))
+
+       result = cursor.fetchone()
+
+       connection.close()
+
+       if result:
+
+          return float(result[0])
+
+       return 0
+   
+
+   def get_current_month_expense(self, user_id):
+
+       connection, cursor = self.get_cursor()
+
+       sql = """
+
+       SELECT COALESCE(SUM(amount), 0)
+
+       FROM transactions
+
+       WHERE user_id = %s
+
+       AND transaction_type = 'expense'
+
+       AND MONTH(transaction_date) = MONTH(CURDATE())
+
+       AND YEAR(transaction_date) = YEAR(CURDATE())
+
+       """
+
+       cursor.execute(sql, (user_id,))
+
+       total = cursor.fetchone()[0]
+
+       self.close_connection(connection, cursor)
+
+       return total
+   
+
+   def get_remaining_budget(self, user_id):
+
+       budget = self.get_budget(user_id)
+
+       spent = self.get_current_month_expense(user_id)
+
+       return float(budget) - float(spent)
