@@ -1,59 +1,191 @@
-Cloud Personal Finance Tracker
-A Python-based personal finance tracker that helps users manage income, expenses, and financial reports through a simple command-line interface.
-Features
-* Add income transactions
-* Add expense transactions
-* View all transactions
-* Edit transactions
-* Delete transactions
-* Search transactions
-* Sort transactions
-* View current balance
-* Spending by category reports
-* Monthly spending reports
-* Date and input validation
-* JSON data storage
-Technologies Used
-* Python
-* Object-Oriented Programming (OOP)
-* JSON
-* Git & GitHub
-Project Structure
-Cloud-Personal-Finance-Tracker/
-│
-├── main.py
-├── finance.py
-├── transaction.py
-├── data.json
-└── .gitignore
-Future Improvements
-* Full Transaction class implementation
-* MySQL database integration
-* Budget planning and alerts
-* Data visualization and charts
-* Web and mobile application versions
+# 💰 Cloud Finance Tracker
 
+A full-stack personal finance management web application built with Python, Flask, MySQL, HTML, CSS, and Chart.js.
+
+Users can securely create an account, log in, manage their income and expenses, and visualize their spending through interactive charts.
+
+---
+
+## Features
+
+- User Registration & Login
+
+- Secure Password Hashing
+
+- Dashboard Overview
+
+- Add Income
+
+- Add Expenses
+
+- Edit Transactions
+
+- Delete Transactions
+
+- View Transaction History
+
+- Current Balance Calculation
+
+- Total Income & Expense Summary
+
+- Spending by Category Pie Chart
+
+- Responsive Design
+
+---
+
+## Technologies Used
+
+- Python
+
+- Flask
+
+- MySQL
+
+- HTML5
+
+- CSS3
+
+- Chart.js
+
+- Jinja2
+
+- Git & GitHub
+
+---
+
+## Project Structure
+
+```
+
+Cloud-Finance-Tracker/
+
+│
+
+├── app.py
+
+├── database.py
+
+├── finance_sql.py
+
+├── requirements.txt
+
+├── .env.example
+
+├── README.md
+
+│
+
+├── templates/
+
+│   ├── index.html
+
+│   ├── login.html
+
+│   ├── register.html
+
+│   ├── add_income.html
+
+│   ├── add_expense.html
+
+│   ├── transactions.html
+
+│   └── edit_transaction.html
+
+│
+
+├── static/
+
+│   └── style.css
+
+│
+
+└── screenshots/
+
+```
+
+---
+
+## Installation
+
+Clone the repository
+
+```bash
+
+git clone https://github.com/YOUR_USERNAME/Cloud-Finance-Tracker.git
+
+```
+
+Move into the project
+
+```bash
+
+cd Cloud-Finance-Tracker
+
+```
+
+Install dependencies
+
+```bash
+
+pip install -r requirements.txt
+
+```
+
+Create a `.env` file
+
+```
+
+DB_HOST=
+
+DB_USER=
+
+DB_PASSWORD=
+
+DB_NAME=
+
+SECRET_KEY=
+
+```
+
+Run the application
+
+```bash
+
+python app.py
+
+```
+
+---
 
 ## Screenshots
 
-### Dashboard
+(Add screenshots here after deployment.)
 
-![Dashboard](screenshots/dashboard.png)
+---
 
-### Transactions
+## Future Improvements
 
-![Transactions](screenshots/transactions.png)
+- Budget Goals
 
-### Add Income
+- Monthly Reports
 
-![Add Income](screenshots/add_income.png)
+- Export to CSV
 
-### Add Expense
+- Dark Mode
 
-![Add Expense](screenshots/add_expense.png)
+- Email Notifications
 
-  
+- Password Reset
 
-Author 
+- Multi-currency Support
 
-Mikael Sinit
+---
+
+## Author
+
+**Sinit Mikael**
+
+Computer Science Graduate
+
+Aspiring Python Backend & Cloud Developer
